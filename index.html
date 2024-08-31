@@ -25,6 +25,34 @@
 		showModel {
 			align-content: flex-start;
 		}
+
+		model-viewer > #ar-prompt {
+			position: absolute;
+			left: 50%;
+			bottom: 175px;
+			animation: elongate 2s infinite ease-in-out alternate;
+			display: none;
+		}
+
+		model-viewer[ar-status="session-started"] > #ar-prompt {
+			display: block;
+		}
+
+		model-viewer > #ar-prompt > img {
+			animation: circle 4s linear infinite;
+		}
+
+		model-viewer > #ar-failure {
+			position: absolute;
+			left: 50%;
+			transform: translateX(-50%);
+			bottom: 175px;
+			display: none;
+		}
+
+		model-viewer[ar-tracking="not-tracking"] > #ar-failure {
+			display: block;
+		}
 	
 </style>
 </head>
@@ -37,9 +65,24 @@
 
     <div id="showModel">
 
-   <model-viewer id="mv1" camera-controls touch-action="pan-y" src="models/dna.glb" ar ar-modes="webxr scene-viewer quick-look"
-			alt="3D Model" style="background-color: ffffff;"></model-viewer>					
-					
+   <model-viewer id="mv1" camera-controls touch-action="pan-y" src="models/dna.glb" ar ar-scale="fixed" ar-placement="floor" exposure="0.8" ar-modes="webxr scene-viewer quick-look"
+			alt="3D Model" style="background-color: ffffff;">
+		
+			<div id="ar-prompt">
+				<img src="assets/hand.png">
+			</div>
+			
+			<button id="ar-failure">
+				AR is not tracking!
+			</button>
+
+			<div id="error" class="hide">
+				AR is not supported on this device
+			</div>
+		
+	</model-viewer>					
+	
+	
   
 </div>
 
@@ -63,6 +106,17 @@
     
     // A $( document ).ready() block.
     $( document ).ready(function() {
+
+		document.querySelector("#model-viewer").addEventListener('ar-status', (event) => {
+			if(event.detail.status === 'failed'){
+			const error = document.querySelector("#error");
+			error.classList.remove('hide');
+			error.addEventListener('transitionend',(event) => {
+				error.classList.add('hide');
+			});
+			}
+		});
+
         console.log( "ready!" );
 		const primaryButton = document.getElementById('primaryButton');
         const secondaryButton = document.getElementById('secondaryButton');
