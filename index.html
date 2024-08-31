@@ -53,6 +53,21 @@
 		model-viewer[ar-tracking="not-tracking"] > #ar-failure {
 			display: block;
 		}
+		#error {
+			background-color: #ffffffdd;
+			border-radius: 16px;
+			padding: 16px;
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate3d(-50%, -50%, 0);
+			transition: opacity 0.3s;
+		}
+		#error.hide {
+			opacity: 0;
+			visibility: hidden;
+			transition: visibility 2s, opacity 1s 1s;
+		}
 	
 </style>
 </head>
@@ -65,7 +80,7 @@
 
     <div id="showModel">
 
-   <model-viewer id="mv1" camera-controls touch-action="pan-y" src="models/dna.glb" ar ar-scale="fixed" ar-placement="floor" exposure="0.8" ar-modes="scene-viewer"
+   <model-viewer id="mv1" camera-controls touch-action="pan-y" src="models/dna.glb" ar ar-scale="fixed" ar-placement="floor" exposure="0.8" ar-modes="webxr scene-viewer quick-look"
 			alt="3D Model" style="background-color: ffffff;">
 		
 			<div id="ar-prompt">
